@@ -1,4 +1,4 @@
-[![made-with-latex](https://img.shields.io/badge/Made%20with-LaTeX-1f425f.svg)](https://www.latex-project.org/) 
+[![made-with-latex](https://img.shields.io/badge/Made%20with-LaTeX-1f425f.svg)](https://www.latex-project.org/) ![Compile the example](https://github.com/EagleoutIce/figuremirror/workflows/Compile%20the%20example/badge.svg)
 
 # figuremirror
 Quick and dirty package written to mirror figure environments at the end of a document. May be customized.
