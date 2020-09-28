@@ -13,6 +13,7 @@
 \ProvidesPackage{figuremirror}[2020/09/28 v0.1 mirror figures]
 
 \RequirePackage{graphicx,etoolbox}
+\RequirePackage[]{rotating}
 
 \newcounter{fgm@imgcounter}
 
@@ -42,24 +43,24 @@
         Abbildung ohne Bildunterschrift auf Seite \pageref{fgm@fig:#1}.
     }{%
         \@parboxrestore\if@minipage\@setminipage\fi%
+        \def\@captype{figure}%
         \normalsize\@makecaption{\figurename\ \@nameuse{\@fgm@num}}%
             {\ignorespaces \@nameuse{fgm@data@cap@title@#1} (\pageref{fgm@fig:#1})}%
     }\par%
 }
 
-\def\fgm@loadimg#1{%
-\begin{figure}[!ht]
-    \centering\fgm@includegraphics[width=\linewidth]{\@nameuse{fgm@ldimage@#1}}\par
+\def\fgm@loadimg#1{\let\fgm@linewidth\linewidth%
+\begin{sidewaysfigure}
+    \centering\fgm@includegraphics[width=\linewidth,height=0.5\fgm@linewidth,keepaspectratio]{\@nameuse{fgm@ldimage@#1}}\\*\nopagebreak\leavevmode\\*
     \fgm@ts@caption{#1} % fgm@ts@
-\end{figure}
-}
+\end{sidewaysfigure}}
 % at first we modify includegraphics do store the wanted
 % image paths. Fully expanded in case of macros
 \let\fgm@includegraphics\includegraphics
 \renewcommand{\includegraphics}[2][]{%
     \stepcounter{fgm@imgcounter}\phantomsection\label{fgm@fig:\thefgm@imgcounter}%
     \expandafter\protected@edef\csname fgm@imgname@\thefgm@imgcounter\endcsname{#2}%
-    \immediate\write\@auxout{\noexpand\fgm@ldimg{\thefgm@imgcounter}{\@nameuse{fgm@imgname@\thefgm@imgcounter}}}%
+    \protected@write\@auxout{}{\protect\fgm@ldimg{\thefgm@imgcounter}{\@nameuse{fgm@imgname@\thefgm@imgcounter}}}%
     \fgm@includegraphics[#1]{#2}% Add it to the list
 }
 
@@ -84,7 +85,7 @@
 }
 
 \newcommand*\mirrorimages{%
-\bgroup%
+\bgroup\raggedbottom%
 \forlistloop{\fgm@loadimg}{\fgm@imglist}%
 \egroup
 }
