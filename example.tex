@@ -1,0 +1,69 @@
+\documentclass{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{xcolor}
+
+\usepackage{hyperref}
+
+\hypersetup{pdfborder=0 0 0,colorlinks=true,allcolors=purple}
+
+\usepackage[main=ngerman,english]{babel}
+\usepackage{figuremirror}
+
+\usepackage{blindtext}
+
+\title{exampledocument}
+\author{Florian Sihler \and A happy Duck}
+\date{\today}
+\begin{document}
+    
+\maketitle
+
+\listoffigures
+
+\begin{figure}
+    \includegraphics[width=\linewidth]{./exampleimage2.png}
+    \caption{Ein Bild}
+\end{figure}
+
+Dieses Bild ist nicht in einer figure Umgebung:\bigskip\\
+\includegraphics[width=\linewidth]{./exampleimage.png}
+
+\begin{figure}[t]
+    \includegraphics[width=\linewidth]{./exampleimage.png}
+    \caption{Auch ein Bild}
+\end{figure}
+
+\blinddocument
+
+\begin{figure}[t]
+    \includegraphics[width=\linewidth]{./exampleimage.png}
+    \caption{Ein besseres Bild}
+\end{figure}
+
+
+\begin{figure}[t]
+    \includegraphics[width=\linewidth]{./exampleimage2.png}
+    \caption{Das beste Bild}
+\end{figure}
+
+
+\begin{figure}[t]
+    \begin{minipage}[t]{0.48\linewidth}
+        \includegraphics[width=\linewidth]{./exampleimage.png}
+        \mirrorcap{Ich bin der exklusive Titel für dieses Bild.}
+    \end{minipage}
+    \begin{minipage}[t]{0.48\linewidth}
+        \includegraphics[width=\linewidth]{./exampleimage2.png}
+    \end{minipage}
+    \caption{Zwei Bilder beieinander}
+\end{figure}
+
+\blindtext
+
+\clearpage\appendix
+\section{Isch bin der Appendix}
+
+\mirrorimages
+\end{document}
