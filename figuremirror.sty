@@ -51,7 +51,9 @@
 
 \def\fgm@loadimg#1{\let\fgm@linewidth\linewidth%
 \begin{sidewaysfigure}
-    \centering\fgm@includegraphics[width=\linewidth,height=0.5\fgm@linewidth,keepaspectratio]{\@nameuse{fgm@ldimage@#1}}\\*\nopagebreak\leavevmode\\*
+    \centering%
+    \edef\@fgm@curimg{\noexpand\fgm@includegraphics[width=\noexpand\linewidth,height=0.5\noexpand\fgm@linewidth,keepaspectratio]%
+        {\@nameuse{fgm@ldimage@#1}}}\@fgm@curimg\\*\nopagebreak\leavevmode\\*
     \fgm@ts@caption{#1} % fgm@ts@
 \end{sidewaysfigure}}
 % at first we modify includegraphics do store the wanted
@@ -60,7 +62,7 @@
 \renewcommand{\includegraphics}[2][]{%
     \stepcounter{fgm@imgcounter}\phantomsection\label{fgm@fig:\thefgm@imgcounter}%
     \expandafter\protected@edef\csname fgm@imgname@\thefgm@imgcounter\endcsname{#2}%
-    \protected@write\@auxout{}{\protect\fgm@ldimg{\thefgm@imgcounter}{\@nameuse{fgm@imgname@\thefgm@imgcounter}}}%
+    \immediate\write\@auxout{\noexpand\fgm@ldimg{\thefgm@imgcounter}{\@nameuse{fgm@imgname@\thefgm@imgcounter}}}%
     \fgm@includegraphics[#1]{#2}% Add it to the list
 }
 
