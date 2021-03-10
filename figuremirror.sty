@@ -3,17 +3,16 @@
 %% --------------------------------------------------------------
 %% Author: Florian Sihler
 %% Version: 0.1 28.09.2020
-%% 
+%%
 %% This package will collect all figures appearing in the document
-%% and provide a command to typeset them again with 
+%% and provide a command to typeset them again with
 %% different formatting.
 
 %% Internal commands will be prefixed with fgm
 
 \ProvidesPackage{figuremirror}[2020/09/28 v0.1 mirror figures]
 
-\RequirePackage{graphicx,etoolbox}
-\RequirePackage[]{rotating}
+\RequirePackage{graphicx,etoolbox,rotating}
 
 \newcounter{fgm@imgcounter}
 
@@ -38,21 +37,21 @@
 }
 
 \def\fgm@ts@caption#1{%
-    \edef\@fgm@num{fgm@data@cap@number@#1}%
+    \protected@edef\@fgm@num{fgm@data@cap@number@#1}%
     \fgm@ifempty{\@fgm@num}{%
         Abbildung ohne Bildunterschrift auf Seite \pageref{fgm@fig:#1}.
     }{%
-        \@parboxrestore\if@minipage\@setminipage\fi%
+        \@parboxrestore\if@minipage\@setminipage\fi
         \def\@captype{figure}%
         \normalsize\@makecaption{\figurename\ \@nameuse{\@fgm@num}}%
             {\ignorespaces \@nameuse{fgm@data@cap@title@#1} (\pageref{fgm@fig:#1})}%
-    }\par%
+    }\par
 }
 
-\def\fgm@loadimg#1{\let\fgm@linewidth\linewidth%
+\def\fgm@loadimg#1{\let\fgm@linewidth\linewidth
 \begin{sidewaysfigure}
-    \centering%
-    \edef\@fgm@curimg{\noexpand\fgm@includegraphics[width=\noexpand\linewidth,height=0.5\noexpand\fgm@linewidth,keepaspectratio]%
+    \centering
+    \protected@edef\@fgm@curimg{\noexpand\fgm@includegraphics[width=\noexpand\linewidth,height=.5\noexpand\fgm@linewidth,keepaspectratio]%
         {\@nameuse{fgm@ldimage@#1}}}\@fgm@curimg\\*\nopagebreak\leavevmode\\*
     \fgm@ts@caption{#1} % fgm@ts@
 \end{sidewaysfigure}}
@@ -68,9 +67,9 @@
 
 \let\fgm@caption\caption
 \renewcommand{\caption}[2][]{%
-    \ifx\\#1\\\fgm@caption{#2}\else\fgm@caption[#1]{#2}\fi%
+    \ifx!#1!\fgm@caption{#2}\else\fgm@caption[#1]{#2}\fi
     % img counter is id theimage is ref
-    \fgm@mirrorcap{\thefigure}{#2}
+    \fgm@mirrorcap{\thefigure}{#2}%
 }
 
 \newcommand\fgm@mirrorcap[2]{
@@ -82,14 +81,12 @@
     }%
 }
 
-\newcommand\mirrorcap[2][\the\numexpr\thefigure+1\relax]{%
-    \fgm@mirrorcap{#1}{#2}%
-}
+\newcommand\mirrorcap[2][\the\numexpr\thefigure+1\relax]{\fgm@mirrorcap{#1}{#2}}
 
 \newcommand*\mirrorimages{%
-\bgroup\raggedbottom%
+\begingroup\raggedbottom
 \forlistloop{\fgm@loadimg}{\fgm@imglist}%
-\egroup
+\endgroup
 }
 
 \endinput
