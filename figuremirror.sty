@@ -1,6 +1,4 @@
 %% figuremirror.sty
-%%
-%% --------------------------------------------------------------
 %% Author: Florian Sihler
 %% Version: 0.1 28.09.2020
 %%
@@ -9,22 +7,18 @@
 %% different formatting.
 
 %% Internal commands will be prefixed with fgm
-
 \ProvidesPackage{figuremirror}[2020/09/28 v0.1 mirror figures]
-
 \RequirePackage{graphicx,etoolbox,rotating}
 
 \newcounter{fgm@imgcounter}
-
-\providecommand{\fgm@totalimg}{0}
-
+\providecommand\fgm@totalimg{0}
 \def\fgm@imglist{}
 
 \AtEndDocument{\immediate\write\@auxout{\expandafter\gdef\noexpand\fgm@totalimg{\thefgm@imgcounter}}}
 
 \def\fgm@ldimg#1#2{%
     \expandafter\gdef\csname fgm@ldimage@#1\endcsname{#2}%
-    \listxadd{\fgm@imglist}{#1}%
+    \listxadd\fgm@imglist{#1}%
 }
 
 \def\fgm@ldcap#1#2#3{%
@@ -32,9 +26,7 @@
     \expandafter\gdef\csname fgm@data@cap@title@#1\endcsname{#3}%
 }
 
-\def\fgm@ifempty#1#2#3{%
-    \@ifundefined{#1}{#2}{#3}%
-}
+\let\fgm@ifempty\@ifundefined
 
 \def\fgm@ts@caption#1{%
     \protected@edef\@fgm@num{fgm@data@cap@number@#1}%
@@ -73,20 +65,18 @@
 }
 
 \newcommand\fgm@mirrorcap[2]{
-    \expandafter\protected@edef\csname fgm@capname@\thefgm@imgcounter\endcsname{#2}%
-    \protected@write\@auxout{}{%
-        \protect\fgm@ldcap{\thefgm@imgcounter}%
-            {#1}%
-            {\@nameuse{fgm@capname@\thefgm@imgcounter}}%
-    }%
-}
+\expandafter\protected@edef\csname fgm@capname@\thefgm@imgcounter\endcsname{#2}%
+\protected@write\@auxout{}{%
+    \protect\fgm@ldcap{\thefgm@imgcounter}%
+        {#1}%
+        {\csname fgm@capname@\thefgm@imgcounter\endcsname}%
+}}
 
-\newcommand\mirrorcap[2][\the\numexpr\thefigure+1\relax]{\fgm@mirrorcap{#1}{#2}}
+\newcommand\mirrorcap[2][\the\numexpr\thefigure+\@ne]{\fgm@mirrorcap{#1}{#2}}
 
 \newcommand*\mirrorimages{%
 \begingroup\raggedbottom
-\forlistloop{\fgm@loadimg}{\fgm@imglist}%
-\endgroup
-}
+\forlistloop\fgm@loadimg{\fgm@imglist}%
+\endgroup}
 
 \endinput
