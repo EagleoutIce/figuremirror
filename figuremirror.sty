@@ -1,7 +1,6 @@
 %% figuremirror.sty
 %% Author: Florian Sihler
 %% Version: 0.1 28.09.2020
-%%
 %% This package will collect all figures appearing in the document
 %% and provide a command to typeset them again with
 %% different formatting.
@@ -10,11 +9,11 @@
 \ProvidesPackage{figuremirror}[2020/09/28 v0.1 mirror figures]
 \RequirePackage{graphicx,etoolbox,rotating}
 
-\newcounter{fgm@imgcounter}
+\newcount\c@fgm@imgcounter
 \providecommand\fgm@totalimg{0}
 \def\fgm@imglist{}
 
-\AtEndDocument{\immediate\write\@auxout{\expandafter\gdef\noexpand\fgm@totalimg{\thefgm@imgcounter}}}
+\AtEndDocument{\immediate\write\@auxout{\expandafter\gdef\noexpand\fgm@totalimg{\number\c@fgm@imgcounter}}}
 
 \def\fgm@ldimg#1#2{%
     \expandafter\gdef\csname fgm@ldimage@#1\endcsname{#2}%
@@ -51,9 +50,9 @@
 % image paths. Fully expanded in case of macros
 \let\fgm@includegraphics\includegraphics
 \renewcommand{\includegraphics}[2][]{%
-    \stepcounter{fgm@imgcounter}\phantomsection\label{fgm@fig:\thefgm@imgcounter}%
-    \expandafter\protected@edef\csname fgm@imgname@\thefgm@imgcounter\endcsname{#2}%
-    \immediate\write\@auxout{\noexpand\fgm@ldimg{\thefgm@imgcounter}{\@nameuse{fgm@imgname@\thefgm@imgcounter}}}%
+    \global\advance\c@fgm@imgcounter1\phantomsection\label{fgm@fig:\number\c@fgm@imgcounter}%
+    \expandafter\protected@edef\csname fgm@imgname@\number\c@fgm@imgcounter\endcsname{#2}%
+    \immediate\write\@auxout{\noexpand\fgm@ldimg{\number\c@fgm@imgcounter}{\@nameuse{fgm@imgname@\number\c@fgm@imgcounter}}}%
     \fgm@includegraphics[#1]{#2}% Add it to the list
 }
 
@@ -65,14 +64,14 @@
 }
 
 \newcommand\fgm@mirrorcap[2]{
-\expandafter\protected@edef\csname fgm@capname@\thefgm@imgcounter\endcsname{#2}%
+\expandafter\protected@edef\csname fgm@capname@\number\c@fgm@imgcounter\endcsname{#2}%
 \protected@write\@auxout{}{%
-    \protect\fgm@ldcap{\thefgm@imgcounter}%
+    \protect\fgm@ldcap{\number\c@fgm@imgcounter}%
         {#1}%
-        {\csname fgm@capname@\thefgm@imgcounter\endcsname}%
+        {\csname fgm@capname@\number\c@fgm@imgcounter\endcsname}%
 }}
 
-\newcommand\mirrorcap[2][\the\numexpr\thefigure+\@ne]{\fgm@mirrorcap{#1}{#2}}
+\newcommand\mirrorcap[2][\the\numexpr\number\c@figure+1]{\fgm@mirrorcap{#1}{#2}}
 
 \newcommand*\mirrorimages{%
 \begingroup\raggedbottom
